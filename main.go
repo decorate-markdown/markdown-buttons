@@ -2,18 +2,24 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"github.com/gofiber/fiber/v2"
+	"net/http"
+	"github.com/gin-gonic/gin"
 )
+
+type ButtonConfig struct {
+	CONTENT []string `json:"content"`
+}
 
 func main() {
 	fmt.Print("Hello World!")
 
-	app := fiber.New()
+	r := gin.Default()
 
-	app.Get("/healthcheck", func(c *fiber.Ctx) error {
-		return c.SendString("WORKS")
-	})
+  r.GET("/", func(c *gin.Context) {
+    c.JSON(http.StatusOK, gin.H{
+      "message": "WORKS",
+    })
+  })
 
-	log.Fatal(app.Listen(":4000"))
+  r.Run()
 }
