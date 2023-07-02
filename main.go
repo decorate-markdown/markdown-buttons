@@ -1,20 +1,10 @@
 package main
 
-import (
-	"context"
-	"fmt"
-	"log"
-)
+import "log"
 
 func main() {
 	service := NewLoggingService(NewMarkdownButtonsService())
 
-	req := ButtonRequest{Text: "Hello World!"}
-
-	button, err := service.GetButton(context.TODO(), &req)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("%+v\n", button)
+	apiServer := NewApiServer(service)
+	log.Fatal(apiServer.Start(":3000"))
 }
