@@ -9,5 +9,5 @@ type ButtonRequest struct {
 }
 
 type ButtonResponse struct {
-	Button image.Image `json:"button"`
+	Button image.Image
 }

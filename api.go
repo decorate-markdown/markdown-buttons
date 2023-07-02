@@ -21,7 +21,7 @@ func (s *ApiServer) Start(listenAddr string) error {
 }
 
 func (s *ApiServer) handleGetButton(w http.ResponseWriter, r *http.Request) {
-	button, serviceErr := s.service.GetButton(context.Background(), &ButtonRequest{Text: "Hello World!"})
+	button, serviceErr := s.service.GetButton(context.Background(), &ButtonRequest{Text: "Hello"})
 
 	if serviceErr != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
