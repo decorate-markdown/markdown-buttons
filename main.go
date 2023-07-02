@@ -1,25 +1,20 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"net/http"
-	"github.com/gin-gonic/gin"
+	"log"
 )
 
-type ButtonConfig struct {
-	CONTENT []string `json:"content"`
-}
-
 func main() {
-	fmt.Print("Hello World!")
+	service := NewLoggingService(NewMarkdownButtonsService())
 
-	r := gin.Default()
+	req := ButtonRequest{Text: "Hello World!"}
 
-  r.GET("/", func(c *gin.Context) {
-    c.JSON(http.StatusOK, gin.H{
-      "message": "WORKS",
-    })
-  })
+	button, err := service.GetButton(context.TODO(), &req)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  r.Run()
+	fmt.Printf("%+v\n", button)
 }
