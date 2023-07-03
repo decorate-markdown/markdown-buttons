@@ -46,5 +46,7 @@ func (s *ApiServer) handleGetButton(c *gin.Context) {
 
 	imageBytes := buf.Bytes()
 
+	c.Writer.Header().Set("Content-Type", "image/png")
+
 	c.Render(http.StatusOK, render.Data{Data: imageBytes})
 }
