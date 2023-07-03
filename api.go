@@ -27,7 +27,14 @@ func (s *ApiServer) Start() {
 }
 
 func (s *ApiServer) handleGetButton(c *gin.Context) {
-	button, serviceErr := s.service.GetButton(context.Background(), &ButtonRequest{Text: "Hello"})
+	button, serviceErr := s.service.GetButton(context.Background(), &ButtonConfig{
+		PaddingX:        4,
+		PaddingY:        4,
+		BackgroundColor: "#282828",
+		Text:            "CHECK CHECK CHECK CHECK",
+		FontScale:       1.1,
+		TextColor:       "#ebdbb2",
+	})
 
 	if serviceErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
