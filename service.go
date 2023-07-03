@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"image"
 )
 
 type Service interface {
@@ -19,10 +18,4 @@ func (s *MarkdownButtonsService) GetButton(ctx context.Context, req *ButtonReque
 	button, err := GenerateButton(req)
 
 	return &ButtonResponse{Button: button}, err
-}
-
-func GenerateButton(config *ButtonRequest) (image.Image, error) {
-	button := image.NewRGBA(image.Rect(0, 0, 200, 30))
-
-	return button, nil
 }
