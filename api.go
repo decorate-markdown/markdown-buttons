@@ -36,7 +36,7 @@ func (s *ApiServer) handleGetButton(c *gin.Context) {
 	}
 
 	buf := new(bytes.Buffer)
-	encodeErr := png.Encode(buf, button.Button)
+	encodeErr := png.Encode(buf, *button)
 
 	if encodeErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

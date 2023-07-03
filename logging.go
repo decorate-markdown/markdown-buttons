@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"image"
 	"time"
 )
 
@@ -14,7 +15,7 @@ func NewLoggingService(service Service) *LoggingService {
 	return &LoggingService{service}
 }
 
-func (s *LoggingService) GetButton(ctx context.Context, req *ButtonRequest) (button *ButtonResponse, err error) {
+func (s *LoggingService) GetButton(ctx context.Context, req *ButtonRequest) (button *image.Image, err error) {
 	defer func(start time.Time) {
 		fmt.Printf("[%v] %v | Error: %v (Took %v)\n", start, req, err, time.Since(start))
 	}(time.Now())
