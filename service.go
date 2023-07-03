@@ -16,7 +16,13 @@ func NewMarkdownButtonsService() *MarkdownButtonsService {
 }
 
 func (s *MarkdownButtonsService) GetButton(ctx context.Context, req *ButtonRequest) (*ButtonResponse, error) {
+	button, err := GenerateButton(req)
+
+	return &ButtonResponse{Button: button}, err
+}
+
+func GenerateButton(config *ButtonRequest) (image.Image, error) {
 	button := image.NewRGBA(image.Rect(0, 0, 200, 30))
 
-	return &ButtonResponse{Button: button}, nil
+	return button, nil
 }

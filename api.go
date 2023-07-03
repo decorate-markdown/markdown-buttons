@@ -5,6 +5,9 @@ import (
 	"context"
 	"image/png"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/render"
 )
 
 type ApiServer struct {
@@ -15,32 +18,33 @@ func NewApiServer(service Service) *ApiServer {
 	return &ApiServer{service}
 }
 
-func (s *ApiServer) Start(listenAddr string) error {
-	http.HandleFunc("/", s.handleGetButton)
-	return http.ListenAndServe(listenAddr, nil)
+func (s *ApiServer) Start() {
+	r := gin.Default()
+
+	r.GET("/", s.handleGetButton)
+
+	r.Run()
 }
 
-func (s *ApiServer) handleGetButton(w http.ResponseWriter, r *http.Request) {
+func (s *ApiServer) handleGetButton(c *gin.Context) {
 	button, serviceErr := s.service.GetButton(context.Background(), &ButtonRequest{Text: "Hello"})
 
 	if serviceErr != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		w.Header().Add("Content-Type", "text/plain")
-		w.Write([]byte(serviceErr.Error()))
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Service Error",
+		})
 	}
 
 	buf := new(bytes.Buffer)
 	encodeErr := png.Encode(buf, button.Button)
 
 	if encodeErr != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Header().Add("Content-Type", "text/plain")
-		w.Write([]byte(encodeErr.Error()))
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Bad Data",
+		})
 	}
 
 	imageBytes := buf.Bytes()
 
-	w.WriteHeader(http.StatusOK)
-	w.Header().Add("Content-Type", "image/png")
-	w.Write(imageBytes)
+	c.Render(http.StatusOK, render.Data{Data: imageBytes})
 }
