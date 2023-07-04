@@ -8,6 +8,7 @@ import (
 
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/font"
 )
 
 func ParseHexColor(s string) (c color.RGBA, err error) {
@@ -81,7 +82,6 @@ func addLabel(img *image.RGBA, x, y int, label string, col string, fontSize floa
 	}
 
 	pt := freetype.Pt(x, y)
-	// pt := freetype.Pt(10, 10+int(c.PointToFixed(fontSize)>>6))
 
 	c.DrawString(label, pt)
 
@@ -89,19 +89,19 @@ func addLabel(img *image.RGBA, x, y int, label string, col string, fontSize floa
 }
 
 func GenerateButton(config *ButtonConfig) (image.Image, error) {
-	font, err := initializeFont()
+	f, err := initializeFont()
 	if err != nil {
 		return nil, err
 	}
 
 	opts := truetype.Options{}
 	opts.Size = config.FontSize
-	face := truetype.NewFace(font, &opts)
+	face := truetype.NewFace(f, &opts)
 
-	// textWidth := font.MeasureString(face, config.Text).Ceil()
+	textWidth := font.MeasureString(face, config.Text).Ceil()
 	textHeight := face.Metrics().Height.Ceil() - int(config.FontSize/4)
 
-	width := int(config.FontSize)*len(config.Text) + (2 * config.PaddingX)
+	width := textWidth + (2 * config.PaddingX)
 	height := textHeight + (2 * config.PaddingY)
 
 	button := image.NewRGBA(image.Rect(0, 0, width, height))
