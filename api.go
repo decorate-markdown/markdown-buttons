@@ -14,10 +14,10 @@ import (
 const (
 	defaultBGColor  string = "#4D4D4D"
 	defaultFGColor  string = "#FFFFFF"
-	defaultFont     string = "Roboto-Regular"
-	defaultPaddingX int    = 8
-	defaultPaddingY int    = 8
-	defaultFontSize int    = 16
+	defaultFont     string = "RobotoMono-Regular"
+	defaultPaddingX int    = 12
+	defaultPaddingY int    = 12
+	defaultFontSize int    = 14
 	defaultText     string = ""
 )
 
@@ -54,7 +54,7 @@ func generateButtonConfig(c *gin.Context) (*ButtonConfig, error) {
 
 	text := c.DefaultQuery("text", defaultText)
 
-	fontSize, err := strconv.ParseInt(c.Query("py"), 10, 32)
+	fontSize, err := strconv.ParseInt(c.Query("size"), 10, 32)
 	if err != nil {
 		fontSize = int64(defaultFontSize)
 	}
