@@ -28,11 +28,11 @@ func (s *ApiServer) Start() {
 
 func (s *ApiServer) handleGetButton(c *gin.Context) {
 	button, serviceErr := s.service.GetButton(context.Background(), &ButtonConfig{
-		PaddingX:        4,
-		PaddingY:        4,
+		PaddingX:        8,
+		PaddingY:        8,
 		BackgroundColor: "#282828",
 		Text:            "CHECK CHECK CHECK CHECK",
-		FontScale:       1.1,
+		FontSize:        32.0,
 		TextColor:       "#ebdbb2",
 	})
 
