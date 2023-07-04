@@ -5,6 +5,7 @@ import (
 	"context"
 	"image/png"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/render"
@@ -26,15 +27,49 @@ func (s *ApiServer) Start() {
 	r.Run()
 }
 
+func generateButtonConfig(c *gin.Context) (*ButtonConfig, error) {
+	paddingX, err := strconv.ParseInt(c.Query("px"), 10, 32)
+	if err != nil {
+		paddingX = 8
+	}
+
+	paddingY, err := strconv.ParseInt(c.Query("py"), 10, 32)
+	if err != nil {
+		paddingY = 8
+	}
+
+	bgColor := c.DefaultQuery("bg", "#4D4D4D")
+
+	text := c.Query("text")
+
+	fontSize, err := strconv.ParseFloat(c.Query("py"), 64)
+	if err != nil {
+		fontSize = 16
+	}
+
+	fgColor := c.DefaultQuery("fg", "#FFFFFF")
+
+	config := &ButtonConfig{
+		PaddingX:        int(paddingX),
+		PaddingY:        int(paddingY),
+		BackgroundColor: bgColor,
+		Text:            text,
+		FontSize:        fontSize,
+		TextColor:       fgColor,
+	}
+
+	return config, nil
+}
+
 func (s *ApiServer) handleGetButton(c *gin.Context) {
-	button, serviceErr := s.service.GetButton(context.Background(), &ButtonConfig{
-		PaddingX:        8,
-		PaddingY:        8,
-		BackgroundColor: "#282828",
-		Text:            "CHECK CHECK CHECK CHECK",
-		FontSize:        32.0,
-		TextColor:       "#ebdbb2",
-	})
+	buttonConfig, err := generateButtonConfig(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Bad Data",
+		})
+	}
+
+	button, serviceErr := s.service.GetButton(context.Background(), buttonConfig)
 
 	if serviceErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -54,6 +89,5 @@ func (s *ApiServer) handleGetButton(c *gin.Context) {
 	imageBytes := buf.Bytes()
 
 	c.Writer.Header().Set("Content-Type", "image/png")
-
 	c.Render(http.StatusOK, render.Data{Data: imageBytes})
 }
