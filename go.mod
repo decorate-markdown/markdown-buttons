@@ -4,8 +4,6 @@ go 1.18
 
 require github.com/gin-gonic/gin v1.9.1
 
-require github.com/tbxark/g4vercel v0.0.4 // indirect
-
 require (
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
