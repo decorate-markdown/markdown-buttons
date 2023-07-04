@@ -11,6 +11,16 @@ import (
 	"github.com/gin-gonic/gin/render"
 )
 
+const (
+	defaultBGColor  string = "#4D4D4D"
+	defaultFGColor  string = "#FFFFFF"
+	defaultFont     string = "Roboto-Regular"
+	defaultPaddingX int    = 8
+	defaultPaddingY int    = 8
+	defaultFontSize int    = 16
+	defaultText     string = ""
+)
+
 type ApiServer struct {
 	service Service
 }
@@ -30,29 +40,32 @@ func (s *ApiServer) Start() {
 func generateButtonConfig(c *gin.Context) (*ButtonConfig, error) {
 	paddingX, err := strconv.ParseInt(c.Query("px"), 10, 32)
 	if err != nil {
-		paddingX = 8
+		paddingX = int64(defaultPaddingX)
 	}
 
 	paddingY, err := strconv.ParseInt(c.Query("py"), 10, 32)
 	if err != nil {
-		paddingY = 8
+		paddingY = int64(defaultPaddingY)
 	}
 
-	bgColor := c.DefaultQuery("bg", "#4D4D4D")
+	bgColor := c.DefaultQuery("bg", defaultBGColor)
 
-	text := c.Query("text")
+	fontName := c.DefaultQuery("font", defaultFont)
+
+	text := c.DefaultQuery("text", defaultText)
 
 	fontSize, err := strconv.ParseFloat(c.Query("py"), 64)
 	if err != nil {
-		fontSize = 16
+		fontSize = float64(defaultFontSize)
 	}
 
-	fgColor := c.DefaultQuery("fg", "#FFFFFF")
+	fgColor := c.DefaultQuery("fg", defaultFGColor)
 
 	config := &ButtonConfig{
 		PaddingX:        int(paddingX),
 		PaddingY:        int(paddingY),
 		BackgroundColor: bgColor,
+		FontName:        fontName,
 		Text:            text,
 		FontSize:        fontSize,
 		TextColor:       fgColor,

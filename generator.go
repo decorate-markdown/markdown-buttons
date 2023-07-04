@@ -39,8 +39,8 @@ func setBackground(img *image.RGBA, width, height int, col string) error {
 	return nil
 }
 
-func initializeFont() (*truetype.Font, error) {
-	fontBytes, err := ioutil.ReadFile("fonts/Roboto-Regular.ttf")
+func initializeFont(fontName string) (*truetype.Font, error) {
+	fontBytes, err := ioutil.ReadFile("fonts/" + fontName + ".ttf")
 	if err != nil {
 		return nil, err
 	}
@@ -53,8 +53,8 @@ func initializeFont() (*truetype.Font, error) {
 	return font, nil
 }
 
-func setupFont(img *image.RGBA, fontSize float64, col string) (*freetype.Context, error) {
-	font, err := initializeFont()
+func setupFont(img *image.RGBA, fontName string, fontSize float64, col string) (*freetype.Context, error) {
+	font, err := initializeFont(fontName)
 	if err != nil {
 		return nil, err
 	}
@@ -75,8 +75,8 @@ func setupFont(img *image.RGBA, fontSize float64, col string) (*freetype.Context
 	return c, nil
 }
 
-func addLabel(img *image.RGBA, x, y int, label string, col string, fontSize float64) error {
-	c, err := setupFont(img, fontSize, col)
+func addLabel(img *image.RGBA, x, y int, label string, col string, fontName string, fontSize float64) error {
+	c, err := setupFont(img, fontName, fontSize, col)
 	if err != nil {
 		return err
 	}
@@ -89,7 +89,7 @@ func addLabel(img *image.RGBA, x, y int, label string, col string, fontSize floa
 }
 
 func GenerateButton(config *ButtonConfig) (image.Image, error) {
-	f, err := initializeFont()
+	f, err := initializeFont(config.FontName)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +107,7 @@ func GenerateButton(config *ButtonConfig) (image.Image, error) {
 	button := image.NewRGBA(image.Rect(0, 0, width, height))
 
 	setBackground(button, width, height, config.BackgroundColor)
-	addLabel(button, config.PaddingX, textHeight+config.PaddingY, config.Text, config.TextColor, config.FontSize)
+	addLabel(button, config.PaddingX, textHeight+config.PaddingY, config.Text, config.TextColor, config.FontName, config.FontSize)
 
 	return button, nil
 }
