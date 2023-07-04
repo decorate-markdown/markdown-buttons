@@ -53,7 +53,7 @@ func initializeFont(fontName string) (*truetype.Font, error) {
 	return font, nil
 }
 
-func setupFont(img *image.RGBA, fontName string, fontSize float64, col string) (*freetype.Context, error) {
+func setupFont(img *image.RGBA, fontName string, fontSize int, col string) (*freetype.Context, error) {
 	font, err := initializeFont(fontName)
 	if err != nil {
 		return nil, err
@@ -67,7 +67,7 @@ func setupFont(img *image.RGBA, fontName string, fontSize float64, col string) (
 	c := freetype.NewContext()
 	c.SetDPI(72)
 	c.SetFont(font)
-	c.SetFontSize(fontSize)
+	c.SetFontSize(float64(fontSize))
 	c.SetClip(img.Bounds())
 	c.SetDst(img)
 	c.SetSrc(image.NewUniform(textCol))
@@ -75,7 +75,7 @@ func setupFont(img *image.RGBA, fontName string, fontSize float64, col string) (
 	return c, nil
 }
 
-func addLabel(img *image.RGBA, x, y int, label string, col string, fontName string, fontSize float64) error {
+func addLabel(img *image.RGBA, x, y int, label string, col string, fontName string, fontSize int) error {
 	c, err := setupFont(img, fontName, fontSize, col)
 	if err != nil {
 		return err
@@ -95,7 +95,7 @@ func GenerateButton(config *ButtonConfig) (image.Image, error) {
 	}
 
 	opts := truetype.Options{}
-	opts.Size = config.FontSize
+	opts.Size = float64(config.FontSize)
 	face := truetype.NewFace(f, &opts)
 
 	textWidth := font.MeasureString(face, config.Text).Ceil()

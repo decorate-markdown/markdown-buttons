@@ -54,9 +54,9 @@ func generateButtonConfig(c *gin.Context) (*ButtonConfig, error) {
 
 	text := c.DefaultQuery("text", defaultText)
 
-	fontSize, err := strconv.ParseFloat(c.Query("py"), 64)
+	fontSize, err := strconv.ParseInt(c.Query("py"), 10, 32)
 	if err != nil {
-		fontSize = float64(defaultFontSize)
+		fontSize = int64(defaultFontSize)
 	}
 
 	fgColor := c.DefaultQuery("fg", defaultFGColor)
@@ -67,7 +67,7 @@ func generateButtonConfig(c *gin.Context) (*ButtonConfig, error) {
 		BackgroundColor: bgColor,
 		FontName:        fontName,
 		Text:            text,
-		FontSize:        fontSize,
+		FontSize:        int(fontSize),
 		TextColor:       fgColor,
 	}
 
