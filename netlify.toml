@@ -1,5 +1,5 @@
 [build]
-  command = "make build"
+  command = "go build -o bin/mdbtn -v"
   publish = "site"
   functions = "functions"
 [build.environment]
