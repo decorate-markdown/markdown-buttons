@@ -3,5 +3,7 @@ BINARY_NAME=mdbtn
 build:
 	go build -o bin/$(BINARY_NAME) -v
 
-run: build
+run:
 	./bin/$(BINARY_NAME)
+
+test: build run
