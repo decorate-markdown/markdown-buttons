@@ -1,5 +1,0 @@
-[build]
-  command = "go build -o bin/mdbtn -v"
-  publish = "site"
-[build.environment]
-  GO_IMPORT_PATH="github.com/kaganjd/netlify-functions-workshop"
