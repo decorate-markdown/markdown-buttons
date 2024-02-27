@@ -1,6 +1,0 @@
-{
-  "watch": ["**/*"],
-  "ext": "go",
-  "exec": ["make", "run"],
-  "signal": "SIGTERM"
-}

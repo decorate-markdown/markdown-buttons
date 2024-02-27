@@ -31,9 +31,7 @@ func NewApiServer(service Service) *ApiServer {
 
 func (s *ApiServer) Start() {
 	r := gin.Default()
-
-	r.GET("/", s.handleGetButton)
-
+	r.GET("/btn", s.handleGetButton)
 	r.Run()
 }
 
